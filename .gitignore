@@ -15,3 +15,5 @@ desktop.ini
 MEDIA/**/*.mp4
 MEDIA/**/*.mov
 MEDIA/**/*.avi
+
+.vercel
