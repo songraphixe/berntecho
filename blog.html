@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog — BESITS | Security Tips &amp; Industry News</title>
+  <meta name="description" content="Security tips, IT insights, and industry news from BESITS — Ghana's leading electronic security and IT solutions company in Afienya." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <style>
+    /* ── Blog-specific styles ── */
+
+    /* Featured post */
+    .blog-featured {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    @media (max-width: 768px) {
+      .blog-featured { grid-template-columns: 1fr; }
+    }
+
+    .blog-feat-img {
+      position: relative;
+      min-height: 420px;
+      background: url('MEDIA/CCTV.jpg') center / cover;
+    }
+    .blog-feat-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(232,89,26,0.3), rgba(0,0,0,0.6));
+    }
+
+    .blog-feat-body {
+      padding: 52px 48px;
+      background: #0a0a0a;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    @media (max-width: 768px) {
+      .blog-feat-body { padding: 32px 24px; }
+      .blog-feat-img  { min-height: 280px; }
+    }
+
+    /* Category badge */
+    .blog-cat {
+      display: inline-block;
+      padding: 5px 14px;
+      border-radius: 9999px;
+      background: rgba(232,89,26,0.15);
+      border: 1px solid rgba(232,89,26,0.35);
+      color: #E8591A;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .blog-feat-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(20px, 2.5vw, 30px);
+      font-weight: 800;
+      color: rgba(255,255,255,0.95);
+      line-height: 1.25;
+      margin-bottom: 16px;
+    }
+
+    .blog-feat-excerpt {
+      font-size: 15px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.75;
+      margin-bottom: 28px;
+    }
+
+    .blog-feat-meta {
+      display: flex;
+      gap: 20px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+    .blog-feat-meta i {
+      color: #E8591A;
+      margin-right: 6px;
+    }
+
+    /* Blog grid */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 1024px) { .blog-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px)  { .blog-grid { grid-template-columns: 1fr; } }
+
+    .blog-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .blog-card:hover {
+      border-color: rgba(232,89,26,0.35);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+
+    .blog-img {
+      height: 200px;
+      overflow: hidden;
+    }
+    .blog-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+    .blog-card:hover .blog-img img {
+      transform: scale(1.06);
+    }
+
+    .blog-body {
+      padding: 24px;
+    }
+
+    .blog-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.4;
+      margin: 10px 0 10px;
+    }
+
+    .blog-excerpt {
+      font-size: 13.5px;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+
+    .blog-meta {
+      display: flex;
+      gap: 14px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      flex-wrap: wrap;
+    }
+    .blog-meta i {
+      color: #E8591A;
+      margin-right: 4px;
+    }
+
+    .blog-read-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #E8591A;
+      margin-top: 18px;
+      transition: gap 0.2s;
+    }
+    .blog-card:hover .blog-read-link {
+      gap: 10px;
+    }
+
+    /* Newsletter CTA */
+    .nl-cta-wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .nl-cta-form {
+      display: flex;
+      gap: 12px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .nl-cta-form input[type="email"] {
+      flex: 1;
+      min-width: 240px;
+      padding: 14px 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.85);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.25s;
+    }
+    .nl-cta-form input[type="email"]:focus {
+      border-color: rgba(232,89,26,0.5);
+    }
+    .nl-cta-form input[type="email"]::placeholder {
+      color: rgba(255,255,255,0.3);
+    }
+    .nl-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 24px 0;
+      color: rgba(255,255,255,0.2);
+      font-size: 13px;
+    }
+    .nl-divider::before,
+    .nl-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    /* Topics / category pills row — matches shop .cat-tab style */
+    .topics-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+    .topic-pill {
+      padding: 9px 20px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(8px);
+      color: rgba(255,255,255,0.6);
+      font-size: 13.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s;
+      text-decoration: none;
+    }
+    .topic-pill:hover, .topic-pill.active {
+      background: #E8591A;
+      border-color: #E8591A;
+      color: #fff;
+    }
+
+    /* Newsletter form — responsive fix */
+    .nl-cta-form {
+      flex-wrap: nowrap;
+    }
+    .nl-cta-form input[type="email"] {
+      min-width: 0;
+    }
+    @media (max-width: 540px) {
+      .nl-cta-form { flex-wrap: wrap; }
+      .nl-cta-form input[type="email"] { min-width: 100%; }
+      .nl-cta-form button { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Scroll progress -->
+<div id="scroll-progress"></div>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="container">
+    <div class="top-bar-left">
+      <div class="top-bar-item"><i class="fas fa-phone"></i><a href="tel:+233243543893">+233 243 543 893</a></div>
+      <div class="top-bar-item"><i class="fas fa-envelope"></i><a href="mailto:support@berntecho.com">support@berntecho.com</a></div>
+      <div class="top-bar-item"><i class="fas fa-location-dot"></i><span>Afienya, Ghana</span></div>
+    </div>
+    <div class="top-bar-right"><span>Anything IT, We fix it.</span></div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="navbar-brand"><img src="MEDIA/BESITS LOGO.png" alt="BESITS" /></a>
+    <ul class="navbar-nav">
+      <li><a href="index.html"    class="nav-link">Home</a></li>
+      <li><a href="about.html"    class="nav-link">About</a></li>
+      <li><a href="services.html" class="nav-link">Services</a></li>
+      <li><a href="shop.html"     class="nav-link">Shop</a></li>
+      <li><a href="training.html" class="nav-link">Training</a></li>
+      <li><a href="gallery.html"  class="nav-link">Gallery</a></li>
+      <li><a href="blog.html"     class="nav-link active">Blog</a></li>
+      <li><a href="faq.html"      class="nav-link">FAQ</a></li>
+      <li><a href="contact.html"  class="nav-link">Contact</a></li>
+    </ul>
+    <a href="contact.html" class="btn-nav navbar-cta">Get a Quote <i class="fas fa-arrow-right"></i></a>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav">
+  <button class="mnav-close"><i class="fas fa-xmark"></i></button>
+  <a href="index.html"    class="nav-link">Home</a>
+  <a href="about.html"    class="nav-link">About</a>
+  <a href="services.html" class="nav-link">Services</a>
+  <a href="shop.html"     class="nav-link">Shop</a>
+  <a href="training.html" class="nav-link">Training</a>
+  <a href="gallery.html"  class="nav-link">Gallery</a>
+  <a href="blog.html"     class="nav-link active">Blog</a>
+  <a href="faq.html"      class="nav-link">FAQ</a>
+  <a href="contact.html"  class="nav-link">Contact</a>
+  <div class="navbar-cta">
+    <a href="contact.html" class="btn-nav">Get a Quote <i class="fas fa-arrow-right"></i></a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE HERO
+═══════════════════════════════════════════ -->
+<section class="page-hero page-hero-img" style="background-image:url('MEDIA/CCTV.jpg')">
+  <div class="container"><div class="ph-content">
+    <span class="s-tag"><i class="fas fa-circle-dot"></i> News &amp; Insights</span>
+    <h1>The BESITS Blog</h1>
+    <p>Security tips, technology updates, and insights from Ghana's leading IT &amp; security experts.</p>
+    <nav class="breadcrumb"><a href="index.html">Home</a><i class="fas fa-chevron-right"></i><span>Blog</span></nav>
+  </div></div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FEATURED POST
+═══════════════════════════════════════════ -->
+<section class="section section-dark">
+  <div class="container">
+
+    <div class="s-head center reveal">
+      <span class="s-tag"><i class="fas fa-circle-dot"></i> Editor's Pick</span>
+      <h2 class="s-title">Featured <span>Article</span></h2>
+    </div>
+
+    <div class="blog-featured reveal">
+      <!-- Image side -->
+      <div class="blog-feat-img" role="img" aria-label="CCTV security camera installation"></div>
+
+      <!-- Content side -->
+      <div class="blog-feat-body">
+        <span class="blog-cat">CCTV Systems</span>
+        <h2 class="blog-feat-title">5 Reasons Every Ghanaian Home Needs a CCTV System in 2025</h2>
+        <p class="blog-feat-excerpt">
+          Crime rates across Greater Accra have increased by 18% in recent years. A professionally installed CCTV system is no longer a luxury — it's a necessity. Here's why.
+        </p>
+        <div class="blog-feat-meta">
+          <span><i class="far fa-calendar"></i> March 15, 2025</span>
+          <span><i class="far fa-clock"></i> 5 min read</span>
+          <span><i class="far fa-user"></i> BESITS Team</span>
+        </div>
+        <a href="articles/cctv-5-reasons.html" class="btn btn-primary" style="align-self:flex-start; padding:14px 32px;">
+          Read Article <i class="fas fa-arrow-right" style="margin-left:8px;"></i>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     BLOG GRID
+═══════════════════════════════════════════ -->
+<section class="section section-darker">
+  <div class="container">
+
+    <div class="s-head center reveal">
+      <span class="s-tag"><i class="fas fa-circle-dot"></i> Latest Posts</span>
+      <h2 class="s-title">More <span>Articles</span></h2>
+      <p class="s-sub">Browse security tips, product guides, and company updates from the BESITS team.</p>
+    </div>
+
+    <!-- Topic filter pills -->
+    <div class="topics-row reveal">
+      <button class="topic-pill active" data-filter="all">All Topics</button>
+      <button class="topic-pill" data-filter="cctv">CCTV</button>
+      <button class="topic-pill" data-filter="fence">Electric Fencing</button>
+      <button class="topic-pill" data-filter="gps">GPS Tracking</button>
+      <button class="topic-pill" data-filter="smart">Smart Homes</button>
+      <button class="topic-pill" data-filter="solar">Solar</button>
+      <button class="topic-pill" data-filter="it">IT Services</button>
+      <button class="topic-pill" data-filter="training">Training</button>
+    </div>
+
+    <!-- Grid of 6 cards -->
+    <div class="blog-grid">
+
+      <!-- Card 1 — GPS Tracking -->
+      <div class="blog-card reveal d1" data-blog-cat="gps">
+        <div class="blog-img">
+          <img src="MEDIA/work pics/128416.jpg" alt="GPS fleet tracking dashboard" loading="lazy"/>
+        </div>
+        <div class="blog-body">
+          <span class="blog-cat">GPS Tracking</span>
+          <h3 class="blog-title">How GPS Fleet Tracking Saved One Accra Business GHS 12,000 Last Year</h3>
+          <p class="blog-excerpt">Fuel theft and unauthorized vehicle use were costing this logistics company thousands each month — until they switched to real-time GPS monitoring.</p>
+          <div class="blog-meta">
+            <span><i class="far fa-calendar"></i> Feb 28, 2025</span>
+            <span><i class="far fa-clock"></i> 4 min read</span>
+          </div>
+          <a href="articles/gps-fleet-tracking.html" class="blog-read-link">Read more <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <!-- Card 2 — Electric Fencing -->
+      <div class="blog-card reveal d2" data-blog-cat="fence">
+        <div class="blog-img">
+          <img src="MEDIA/work pics/128422.jpg" alt="Electric fence installation" loading="lazy"/>
+        </div>
+        <div class="blog-body">
+          <span class="blog-cat">Electric Fencing</span>
+          <h3 class="blog-title">Electric Fence vs Barbed Wire: Which Is Right for Your Property?</h3>
+          <p class="blog-excerpt">Both options offer perimeter security, but they differ greatly in cost, deterrence, maintenance, and legality in Ghana. We break down the key differences.</p>
+          <div class="blog-meta">
+            <span><i class="far fa-calendar"></i> Feb 14, 2025</span>
+            <span><i class="far fa-clock"></i> 6 min read</span>
+          </div>
+          <a href="articles/electric-fence-vs-barbed-wire.html" class="blog-read-link">Read more <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <!-- Card 3 — Training -->
+      <div class="blog-card reveal d3" data-blog-cat="training">
+        <div class="blog-img">
+          <img src="MEDIA/work pics/128498.jpg" alt="BESITS GPS technician training" loading="lazy"/>
+        </div>
+        <div class="blog-body">
+          <span class="blog-cat">Training</span>
+          <h3 class="blog-title">BESITS Launches New GPS Technician Certification Program</h3>
+          <p class="blog-excerpt">Our latest hands-on program equips young Ghanaians with practical skills in GPS tracking installation, configuration, and client support — in just 4 weeks.</p>
+          <div class="blog-meta">
+            <span><i class="far fa-calendar"></i> Jan 30, 2025</span>
+            <span><i class="far fa-clock"></i> 3 min read</span>
+          </div>
+          <a href="articles/gps-technician-program.html" class="blog-read-link">Read more <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <!-- Card 4 — Smart Homes -->
+      <div class="blog-card reveal d4" data-blog-cat="smart">
+        <div class="blog-img">
+          <img src="MEDIA/work pics/128517.jpg" alt="Smart home automation" loading="lazy"/>
+        </div>
+        <div class="blog-body">
+          <span class="blog-cat">Smart Homes</span>
+          <h3 class="blog-title">Smart Home Automation: Transforming Living in Ghana</h3>
+          <p class="blog-excerpt">From remote-controlled gates to automated lighting and smart locks, Ghanaian homeowners are increasingly embracing connected living — and BESITS is leading the charge.</p>
+          <div class="blog-meta">
+            <span><i class="far fa-calendar"></i> Jan 18, 2025</span>
+            <span><i class="far fa-clock"></i> 7 min read</span>
+          </div>
+          <a href="articles/smart-home-automation.html" class="blog-read-link">Read more <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <!-- Card 5 — Solar -->
+      <div class="blog-card reveal d5" data-blog-cat="solar">
+        <div class="blog-img">
+          <img src="MEDIA/work pics/128519.jpg" alt="Off-grid solar installation" loading="lazy"/>
+        </div>
+        <div class="blog-body">
+          <span class="blog-cat">Solar</span>
+          <h3 class="blog-title">Off-Grid Solar: The Ultimate Solution for Ghana's Power Cuts</h3>
+          <p class="blog-excerpt">Load-shedding is a reality for many Ghanaians. A well-designed off-grid solar system keeps your home and security devices running 24/7, regardless of ECG schedules.</p>
+          <div class="blog-meta">
+            <span><i class="far fa-calendar"></i> Jan 5, 2025</span>
+            <span><i class="far fa-clock"></i> 5 min read</span>
+          </div>
+          <a href="articles/offgrid-solar.html" class="blog-read-link">Read more <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <!-- Card 6 — IT Services -->
+      <div class="blog-card reveal d6" data-blog-cat="it">
+        <div class="blog-img">
+          <img src="MEDIA/work pics/128530.jpg" alt="Network security for businesses" loading="lazy"/>
+        </div>
+        <div class="blog-body">
+          <span class="blog-cat">IT Services</span>
+          <h3 class="blog-title">Network Security Best Practices for Ghanaian SMEs</h3>
+          <p class="blog-excerpt">Cybercrime targeting small businesses in West Africa is rising fast. Here are the essential steps every Ghanaian SME should take to protect their data and networks.</p>
+          <div class="blog-meta">
+            <span><i class="far fa-calendar"></i> Dec 20, 2024</span>
+            <span><i class="far fa-clock"></i> 4 min read</span>
+          </div>
+          <a href="articles/network-security-smes.html" class="blog-read-link">Read more <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+    </div><!-- /.blog-grid -->
+
+    <!-- CTA to contact -->
+    <div style="text-align:center; margin-top:48px;" class="reveal">
+      <p style="color:rgba(255,255,255,0.4);font-size:14px;margin-bottom:20px;">Have a question or topic you'd like us to cover?</p>
+      <a href="contact.html" class="btn btn-primary" style="padding:14px 36px; font-size:15px; display:inline-flex; align-items:center; gap:10px;"><i class="fas fa-envelope"></i> Get in Touch</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     NEWSLETTER CTA
+═══════════════════════════════════════════ -->
+<section class="section section-dark">
+  <div class="container">
+    <div class="nl-cta-wrap reveal">
+      <span class="section-tag">Stay Informed</span>
+      <h2 class="section-title" style="margin-bottom:12px;">Stay in the Know</h2>
+      <p style="color:rgba(255,255,255,0.45); font-size:15px; line-height:1.75; margin-bottom:8px;">
+        Get the latest security tips, product launches, and training updates delivered straight to your inbox. No spam — just useful content from the BESITS team.
+      </p>
+
+      <form class="nl-cta-form nl-form">
+        <input type="email" placeholder="Enter your email address" />
+        <button class="btn btn-primary" type="submit">
+          Subscribe <i class="fas fa-paper-plane" style="margin-left:8px;"></i>
+        </button>
+      </form>
+
+      <div class="nl-divider">or reach us directly</div>
+
+      <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+        <a href="https://wa.me/233243543893" class="btn-secondary" target="_blank" style="display:inline-flex; align-items:center; gap:8px;">
+          <i class="fab fa-whatsapp" style="color:#25D366;"></i> Chat on WhatsApp
+        </a>
+        <a href="contact.html" class="btn-secondary" style="display:inline-flex; align-items:center; gap:8px;">
+          <i class="fas fa-envelope" style="color:#E8591A;"></i> Send Us a Message
+        </a>
+      </div>
+
+      <p style="margin-top:24px; font-size:12px; color:rgba(255,255,255,0.2);">
+        We respect your privacy. Unsubscribe at any time.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <img src="MEDIA/FULL LOGO.png" alt="BESITS" class="footer-logo" />
+        <p class="footer-desc">Berntecho Electronic Security &amp; IT Solutions — Ghana's trusted partner since 2017.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Quick Links</h5>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="services.html">Services</a>
+          <a href="training.html">Training</a>
+          <a href="shop.html">Shop</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="blog.html">Blog</a>
+          <a href="faq.html">FAQ</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <div class="footer-ci"><i class="fas fa-phone"></i><a href="tel:+233243543893">+233 243 543 893</a></div>
+        <div class="footer-ci"><i class="fas fa-envelope"></i><a href="mailto:support@berntecho.com">support@berntecho.com</a></div>
+        <div class="footer-ci"><i class="fas fa-location-dot"></i><span>Afienya, Greater Accra, Ghana</span></div>
+        <div class="footer-ci"><i class="fas fa-clock"></i><span>Mon–Fri 8AM–6PM · Sat 9AM–3PM</span></div>
+      </div>
+      <div class="footer-col">
+        <h5>Stay Connected</h5>
+        <div class="socials">
+          <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social"><i class="fab fa-instagram"></i></a>
+          <a href="https://wa.me/233243543893" class="social"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <p class="nl-label">Get updates:</p>
+        <form class="nl-form" onsubmit="return false;">
+          <input type="email" placeholder="Your email" />
+          <button><i class="fas fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      &copy; 2024 BESITS — All rights reserved. &nbsp;·&nbsp;
+      <a href="admin.html" style="color:var(--text-4);font-size:11px;">Admin</a>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOAT ELEMENTS -->
+<a href="https://wa.me/233243543893" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<div class="float-btns">
+  <button id="btn-bottom" class="float-btn"><i class="fas fa-chevron-down"></i></button>
+  <button id="btn-top"    class="float-btn"><i class="fas fa-chevron-up"></i></button>
+</div>
+
+<script src="js/supabase.min.js" defer></script>
+<script src="js/db.js" defer></script>
+<script src="js/main.js" defer></script>
+<script>
+  document.querySelectorAll('.topic-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.topic-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const filter = pill.dataset.filter;
+      document.querySelectorAll('.blog-card[data-blog-cat]').forEach(card => {
+        card.style.display = (filter === 'all' || card.dataset.blogCat === filter) ? '' : 'none';
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

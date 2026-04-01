@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:unsplash.com)",
+      "WebFetch(domain:www.pexels.com)",
+      "Bash(curl -L -o cctv-kit.jpg \"https://source.unsplash.com/featured/600x400/?security-camera,cctv\" --max-time 20 -s)",
+      "Bash(curl -L -o cctv-pro.jpg \"https://source.unsplash.com/featured/600x400/?cctv-camera,surveillance\" --max-time 20 -s)",
+      "Bash(sed -i 's/class=\"\"page-hero\"\">/class=\"\"page-hero page-hero-img\"\" style=\"\"background-image:url\\(''''MEDIA\\\\/CCTV.jpg''''\\)\"\">/g' \"c:/Users/digba/OneDrive/Documentos/BERNTECHO/services.html\")",
+      "Bash(sed -i 's/class=\"\"page-hero\"\">/class=\"\"page-hero page-hero-img\"\" style=\"\"background-image:url\\(''''MEDIA\\\\/work pics\\\\/128516.jpg''''\\)\"\">/g' \"c:/Users/digba/OneDrive/Documentos/BERNTECHO/training.html\")",
+      "Bash(sed -i 's/class=\"\"page-hero\"\">/class=\"\"page-hero page-hero-img\"\" style=\"\"background-image:url\\(''''MEDIA\\\\/work pics\\\\/128510.jpg''''\\)\"\">/g' \"c:/Users/digba/OneDrive/Documentos/BERNTECHO/gallery.html\")",
+      "Bash(sed -i 's/class=\"\"page-hero\"\">/class=\"\"page-hero page-hero-img\"\" style=\"\"background-image:url\\(''''MEDIA\\\\/CCTV.jpg''''\\)\"\">/g' \"c:/Users/digba/OneDrive/Documentos/BERNTECHO/blog.html\")",
+      "Bash(sed -i 's/class=\"\"page-hero\"\">/class=\"\"page-hero page-hero-img\"\" style=\"\"background-image:url\\(''''MEDIA\\\\/work pics\\\\/128416.jpg''''\\)\"\">/g' \"c:/Users/digba/OneDrive/Documentos/BERNTECHO/faq.html\")",
+      "Bash(for f:*)",
+      "Bash(do)",
+      "Bash(sed -i 's/berntechco\\\\.boa@gmail\\\\.com/support@berntecho.com/g' \"$f\")",
+      "Bash(echo \"done: $f\")",
+      "Bash(done)",
+      "Read(//c/Users/digba/OneDrive/Documentos/BERNTECHO/**)",
+      "Bash(npx serve:*)",
+      "Bash(python -m http.server 3000)",
+      "Bash(curl -s http://localhost:3000 -o /dev/null -w \"%{http_code}\")",
+      "Bash(curl -s -o \"c:/Users/digba/OneDrive/Documentos/BERNTECHO/js/supabase.min.js\" \"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js\")",
+      "Bash(pkill -f \"http.server\")",
+      "Bash(curl -s http://localhost:3000/js/supabase.min.js)",
+      "Bash(curl -s -X POST https://irsywbqghfrfdashnpqz.supabase.co/rest/v1/contact_submissions -H 'apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlyc3l3YnFnaGZyZmRhc2hucHF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNjE3ODQsImV4cCI6MjA5MDYzNzc4NH0.0j6CMv95ZaKh84ro4R7tqPTiaPhB4jb4i-F4io3W1Gw' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlyc3l3YnFnaGZyZmRhc2hucHF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNjE3ODQsImV4cCI6MjA5MDYzNzc4NH0.0j6CMv95ZaKh84ro4R7tqPTiaPhB4jb4i-F4io3W1Gw' -H 'Content-Type: application/json' -H 'Prefer: return=minimal' -d '{\"name\":\"Test User\",\"email\":\"test@test.com\",\"message\":\"Test from server\"}' -w '\\\\nHTTP STATUS: %{http_code}')",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/js/db.js)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/js/supabase.min.js)",
+      "Bash(node --check \"c:/Users/digba/OneDrive/Documentos/BERNTECHO/js/db.js\")",
+      "Bash(node --check \"c:/Users/digba/OneDrive/Documentos/BERNTECHO/js/main.js\")"
+    ]
+  }
+}

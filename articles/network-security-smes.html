@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Network Security Best Practices for Ghanaian SMEs — BESITS Blog</title>
+  <meta name="description" content="Cybercrime targeting Ghanaian SMEs is rising. Here are 6 essential network security practices every small business should implement today." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    .article-hero { min-height:420px; position:relative; background-size:cover; background-position:center; display:flex; align-items:flex-end; padding-bottom:60px; overflow:hidden; }
+    .article-hero::before { content:''; position:absolute; inset:0; background:linear-gradient(to top, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.4) 100%); }
+    .article-hero-content { position:relative; z-index:1; }
+    .article-cat { display:inline-block; padding:5px 14px; border-radius:9999px; background:rgba(232,89,26,0.2); border:1px solid rgba(232,89,26,0.4); color:#E8591A; font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:16px; }
+    .article-title { font-family:'Poppins',sans-serif; font-size:clamp(24px,4vw,44px); font-weight:800; color:#fff; line-height:1.2; margin-bottom:16px; max-width:800px; }
+    .article-meta { display:flex; gap:20px; font-size:13px; color:rgba(255,255,255,0.45); flex-wrap:wrap; }
+    .article-meta i { color:#E8591A; margin-right:5px; }
+    .article-body { max-width:780px; margin:0 auto; padding:60px 20px 80px; font-size:16px; line-height:1.85; color:rgba(255,255,255,0.75); }
+    .article-body h2 { font-family:'Poppins',sans-serif; font-size:clamp(20px,3vw,28px); font-weight:700; color:rgba(255,255,255,0.95); margin:52px 0 20px; line-height:1.3; }
+    .article-body h3 { font-family:'Poppins',sans-serif; font-size:18px; font-weight:700; color:rgba(255,255,255,0.9); margin:36px 0 14px; }
+    .article-body p { margin-bottom:22px; }
+    .article-body ul, .article-body ol { padding-left:24px; margin-bottom:22px; }
+    .article-body li { margin-bottom:10px; }
+    .article-body strong { color:rgba(255,255,255,0.95); font-weight:600; }
+    .highlight-box { background:rgba(232,89,26,0.08); border-left:3px solid #E8591A; padding:20px 24px; border-radius:0 8px 8px 0; margin:32px 0; }
+    .highlight-box p { margin:0; color:rgba(255,255,255,0.8); }
+    .practice-num { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; background:rgba(232,89,26,0.2); border:1px solid rgba(232,89,26,0.4); color:#E8591A; font-weight:700; font-size:14px; margin-right:10px; flex-shrink:0; }
+    .article-cta { background:rgba(232,89,26,0.08); border:1px solid rgba(232,89,26,0.25); border-radius:16px; padding:40px; text-align:center; margin-top:60px; }
+    .article-cta h3 { font-family:'Poppins',sans-serif; font-size:22px; font-weight:700; margin-bottom:12px; color:#fff; }
+    .article-cta p { color:rgba(255,255,255,0.55); margin-bottom:24px; }
+    .back-link { display:inline-flex; align-items:center; gap:8px; color:#E8591A; font-size:14px; font-weight:600; margin-bottom:40px; transition:gap 0.2s; text-decoration:none; }
+    .back-link:hover { gap:12px; }
+    hr.article-divider { border:none; border-top:1px solid rgba(255,255,255,0.08); margin:40px 0; }
+  </style>
+</head>
+<body>
+<div id="scroll-progress"></div>
+<div class="top-bar"><div class="container"><div class="top-bar-left"><div class="top-bar-item"><i class="fas fa-phone"></i><a href="tel:+233243543893">+233 243 543 893</a></div><div class="top-bar-item"><i class="fas fa-envelope"></i><a href="mailto:support@berntecho.com">support@berntecho.com</a></div><div class="top-bar-item"><i class="fas fa-location-dot"></i><span>Afienya, Ghana</span></div></div><div class="top-bar-right"><span>Anything IT, We fix it.</span></div></div></div>
+<nav class="navbar"><div class="container"><a href="../index.html" class="navbar-brand"><img src="../MEDIA/BESITS LOGO.png" alt="BESITS" /></a><ul class="navbar-nav"><li><a href="../index.html" class="nav-link">Home</a></li><li><a href="../about.html" class="nav-link">About</a></li><li><a href="../services.html" class="nav-link">Services</a></li><li><a href="../shop.html" class="nav-link">Shop</a></li><li><a href="../training.html" class="nav-link">Training</a></li><li><a href="../gallery.html" class="nav-link">Gallery</a></li><li><a href="../blog.html" class="nav-link active">Blog</a></li><li><a href="../faq.html" class="nav-link">FAQ</a></li><li><a href="../contact.html" class="nav-link">Contact</a></li></ul><a href="../contact.html" class="btn-nav navbar-cta">Get a Quote <i class="fas fa-arrow-right"></i></a><button class="hamburger"><span></span><span></span><span></span></button></div></nav>
+<div class="mobile-nav"><button class="mnav-close"><i class="fas fa-xmark"></i></button><a href="../index.html" class="nav-link">Home</a><a href="../about.html" class="nav-link">About</a><a href="../services.html" class="nav-link">Services</a><a href="../shop.html" class="nav-link">Shop</a><a href="../training.html" class="nav-link">Training</a><a href="../gallery.html" class="nav-link">Gallery</a><a href="../blog.html" class="nav-link active">Blog</a><a href="../faq.html" class="nav-link">FAQ</a><a href="../contact.html" class="nav-link">Contact</a><div class="navbar-cta"><a href="../contact.html" class="btn-nav">Get a Quote <i class="fas fa-arrow-right"></i></a></div></div>
+
+<div class="article-hero" style="background-image:url('../MEDIA/work pics/128530.jpg')">
+  <div class="container">
+    <div class="article-hero-content">
+      <span class="article-cat">IT Services</span>
+      <h1 class="article-title">Network Security Best Practices for Ghanaian SMEs</h1>
+      <div class="article-meta">
+        <span><i class="far fa-calendar"></i> December 20, 2024</span>
+        <span><i class="far fa-clock"></i> 4 min read</span>
+        <span><i class="far fa-user"></i> BESITS Team</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="section section-dark">
+  <div class="container">
+    <div class="article-body">
+      <a href="../blog.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Blog</a>
+
+      <p>Cybercrime targeting small and medium enterprises (SMEs) in West Africa is rising faster than many business owners realise. According to Interpol's Africa Cyberthreat Assessment Report, Ghana ranks among the top targeted countries in sub-Saharan Africa — with phishing, business email compromise (BEC), and ransomware attacks accounting for the majority of incidents.</p>
+      <p>The common misconception is that only large corporations are targeted. In reality, SMEs are often the preferred target because they store valuable customer data while typically having weaker security measures than larger organisations.</p>
+
+      <div class="highlight-box">
+        <p><strong>Key stat:</strong> The average cost of a cyberattack on a small business is estimated at over $25,000 in direct losses — not counting reputational damage and lost clients.</p>
+      </div>
+
+      <h2>Why Ghanaian SMEs Are Targets</h2>
+      <p>Several factors make Ghanaian SMEs attractive to cybercriminals:</p>
+      <ul>
+        <li>Rapid adoption of digital payments and online banking without equivalent security investment</li>
+        <li>Widespread use of personal email accounts and shared passwords for business systems</li>
+        <li>Lack of dedicated IT staff to monitor networks and respond to incidents</li>
+        <li>Minimal employee training on recognising phishing or social engineering attacks</li>
+        <li>Outdated routers and network equipment with default factory passwords</li>
+      </ul>
+
+      <h2>6 Essential Security Practices</h2>
+
+      <h3><span class="practice-num">1</span> Use Strong, Unique Passwords for Everything</h3>
+      <p>Default passwords on routers, cameras, and software are the number one entry point for attackers. Change every default password immediately. Use a password manager like Bitwarden or 1Password to generate and store unique, 16+ character passwords for each account. Enable two-factor authentication (2FA) on email, banking, and cloud storage accounts.</p>
+
+      <h3><span class="practice-num">2</span> Install and Maintain a Business Firewall</h3>
+      <p>A hardware firewall sits between your internet connection and your internal network, filtering malicious traffic before it reaches your computers. Consumer-grade routers are not sufficient for business use. BESITS supplies and configures business-grade firewall appliances appropriate for SME budgets — providing enterprise-level protection without enterprise-level cost.</p>
+
+      <h3><span class="practice-num">3</span> Separate Your Networks</h3>
+      <p>Your business computers, CCTV cameras, and customer WiFi should all be on separate network segments (VLANs). If a guest or customer device is compromised, it cannot reach your accounting software or internal files. This simple configuration is one of the most effective and underused security measures for Ghanaian businesses.</p>
+
+      <h3><span class="practice-num">4</span> Back Up Regularly — and Test Your Backups</h3>
+      <p>Ransomware attacks encrypt your files and demand payment to restore access. The only reliable defence is a current, tested backup stored separately from your main systems. Follow the 3-2-1 rule: 3 copies of data, on 2 different storage types, with 1 copy offsite (or in the cloud). Test your restore process at least once every quarter.</p>
+
+      <h3><span class="practice-num">5</span> Train Your Team to Recognise Phishing</h3>
+      <p>Over 90% of successful cyberattacks begin with a phishing email — a convincing message that tricks a staff member into clicking a malicious link or providing login credentials. Run regular short training sessions. Teach employees to verify sender email addresses carefully, never click unexpected links, and report suspicious messages before taking action.</p>
+
+      <h3><span class="practice-num">6</span> Get Professional IT Support</h3>
+      <p>The most cost-effective security decision most SMEs can make is engaging a professional IT partner for ongoing monitoring and maintenance. An IT support retainer with BESITS includes regular security audits, software updates, firewall monitoring, and fast response to incidents — for a predictable monthly fee that is far less than the cost of a single breach.</p>
+
+      <h2>BESITS IT Support Services</h2>
+      <p>BESITS provides comprehensive IT support for businesses across Greater Accra and beyond. Our services include network setup and hardening, firewall installation and configuration, CCTV integration with business networks, data backup solutions, and staff security awareness training.</p>
+      <p>We work with businesses of all sizes — from single-room shops to multi-branch operations. Every engagement starts with a network assessment to understand your current vulnerabilities and priorities.</p>
+
+      <hr class="article-divider" />
+
+      <div class="article-cta">
+        <h3>Protect Your Business Today</h3>
+        <p>Don't wait for an incident to take network security seriously. Contact BESITS for a free network assessment and discover what your business is currently exposed to.</p>
+        <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+          <a href="../contact.html" class="btn btn-primary">Get a Free Assessment <i class="fas fa-arrow-right"></i></a>
+          <a href="../services.html" class="btn btn-glass">View IT Services <i class="fas fa-network-wired"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer"><div class="container"><div class="footer-grid"><div><img src="../MEDIA/FULL LOGO.png" alt="BESITS" class="footer-logo" /><p class="footer-desc">Berntecho Electronic Security &amp; IT Solutions — Ghana's trusted partner since 2017.</p></div><div class="footer-col"><h5>Quick Links</h5><div class="footer-links"><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../services.html">Services</a><a href="../training.html">Training</a><a href="../shop.html">Shop</a><a href="../gallery.html">Gallery</a><a href="../blog.html">Blog</a><a href="../faq.html">FAQ</a><a href="../contact.html">Contact</a></div></div><div class="footer-col"><h5>Contact</h5><div class="footer-ci"><i class="fas fa-phone"></i><a href="tel:+233243543893">+233 243 543 893</a></div><div class="footer-ci"><i class="fas fa-envelope"></i><a href="mailto:info@berntecho.com">info@berntecho.com</a></div><div class="footer-ci"><i class="fas fa-location-dot"></i><span>Afienya, Greater Accra, Ghana</span></div><div class="footer-ci"><i class="fas fa-clock"></i><span>Mon–Fri 8AM–6PM · Sat 9AM–3PM</span></div></div><div class="footer-col"><h5>Stay Connected</h5><div class="socials"><a href="#" class="social"><i class="fab fa-facebook-f"></i></a><a href="#" class="social"><i class="fab fa-instagram"></i></a><a href="https://wa.me/233243543893" class="social"><i class="fab fa-whatsapp"></i></a><a href="#" class="social"><i class="fab fa-linkedin-in"></i></a></div></div></div></div><div class="footer-bottom"><div class="container">&copy; 2025 BESITS — All rights reserved.</div></div></footer>
+<a href="https://wa.me/233243543893" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<div class="float-btns"><button id="btn-bottom" class="float-btn"><i class="fas fa-chevron-down"></i></button><button id="btn-top" class="float-btn"><i class="fas fa-chevron-up"></i></button></div>
+<script src="../js/supabase.min.js"></script>
+<script src="../js/db.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

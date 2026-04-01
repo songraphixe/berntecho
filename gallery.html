@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery — BESITS | Our Work in Pictures &amp; Video</title>
+  <meta name="description" content="Browse BESITS's photo and video gallery — real CCTV installations, electric fencing, GPS tracking, training sessions, and events across Ghana." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <style>
+    /* ── Gallery-specific styles ── */
+
+    /* Filter tabs */
+    .gallery-tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+    .gtab {
+      padding: 9px 20px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.55);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .gtab.active,
+    .gtab:hover {
+      background: rgba(232,89,26,0.15);
+      border-color: rgba(232,89,26,0.4);
+      color: #E8591A;
+    }
+
+    /* Photo grid */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 1024px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 768px)  { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px)  { .gallery-grid { grid-template-columns: 1fr; } }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      cursor: pointer;
+      aspect-ratio: 1;
+      background: #111;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+    .gallery-item:hover img {
+      transform: scale(1.08);
+    }
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(232,89,26,0.0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: #fff;
+      opacity: 0;
+      transition: all 0.3s;
+    }
+    .gallery-item:hover .gallery-overlay {
+      background: rgba(0,0,0,0.45);
+      opacity: 1;
+    }
+
+    /* Video grid */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 768px) { .video-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .video-grid { grid-template-columns: 1fr; } }
+
+    .vid-card {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      aspect-ratio: 16/9;
+      background: #111;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .vid-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .vid-play-btn {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.35);
+      transition: background 0.3s;
+    }
+    .vid-play-btn i {
+      font-size: 20px;
+      color: #fff;
+      background: rgba(232,89,26,0.85);
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+    .vid-card:hover .vid-play-btn {
+      background: rgba(0,0,0,0.5);
+    }
+    .vid-card:hover .vid-play-btn i {
+      background: #E8591A;
+      transform: scale(1.1);
+      box-shadow: 0 0 30px rgba(232,89,26,0.5);
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0,0,0,0.95);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox.open {
+      display: flex;
+    }
+    .lb-media {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .lb-media img,
+    .lb-media video {
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+      display: block;
+      border-radius: 12px;
+    }
+    .lb-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      font-size: 28px;
+      color: #fff;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .lb-close:hover {
+      background: rgba(232,89,26,0.8);
+    }
+    .lb-prev,
+    .lb-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 22px;
+      color: #fff;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .lb-prev { left: 20px; }
+    .lb-next { right: 20px; }
+    .lb-prev:hover,
+    .lb-next:hover {
+      background: rgba(232,89,26,0.8);
+    }
+
+    /* Gallery CTA section */
+    .gallery-cta-wrap {
+      text-align: center;
+      padding: 32px 0 8px;
+    }
+    .gallery-stat-row {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .gallery-stat {
+      text-align: center;
+    }
+    .gallery-stat .stat-num {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800;
+      color: #E8591A;
+      display: block;
+    }
+    .gallery-stat .stat-label {
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Scroll progress -->
+<div id="scroll-progress"></div>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="container">
+    <div class="top-bar-left">
+      <div class="top-bar-item"><i class="fas fa-phone"></i><a href="tel:+233243543893">+233 243 543 893</a></div>
+      <div class="top-bar-item"><i class="fas fa-envelope"></i><a href="mailto:support@berntecho.com">support@berntecho.com</a></div>
+      <div class="top-bar-item"><i class="fas fa-location-dot"></i><span>Afienya, Ghana</span></div>
+    </div>
+    <div class="top-bar-right"><span>Anything IT, We fix it.</span></div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="navbar-brand"><img src="MEDIA/BESITS LOGO.png" alt="BESITS" /></a>
+    <ul class="navbar-nav">
+      <li><a href="index.html"    class="nav-link">Home</a></li>
+      <li><a href="about.html"    class="nav-link">About</a></li>
+      <li><a href="services.html" class="nav-link">Services</a></li>
+      <li><a href="shop.html"     class="nav-link">Shop</a></li>
+      <li><a href="training.html" class="nav-link">Training</a></li>
+      <li><a href="gallery.html"  class="nav-link active">Gallery</a></li>
+      <li><a href="blog.html"     class="nav-link">Blog</a></li>
+      <li><a href="faq.html"      class="nav-link">FAQ</a></li>
+      <li><a href="contact.html"  class="nav-link">Contact</a></li>
+    </ul>
+    <a href="contact.html" class="btn-nav navbar-cta">Get a Quote <i class="fas fa-arrow-right"></i></a>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav">
+  <button class="mnav-close"><i class="fas fa-xmark"></i></button>
+  <a href="index.html"    class="nav-link">Home</a>
+  <a href="about.html"    class="nav-link">About</a>
+  <a href="services.html" class="nav-link">Services</a>
+  <a href="shop.html"     class="nav-link">Shop</a>
+  <a href="training.html" class="nav-link">Training</a>
+  <a href="gallery.html"  class="nav-link active">Gallery</a>
+  <a href="blog.html"     class="nav-link">Blog</a>
+  <a href="faq.html"      class="nav-link">FAQ</a>
+  <a href="contact.html"  class="nav-link">Contact</a>
+  <div class="navbar-cta">
+    <a href="contact.html" class="btn-nav">Get a Quote <i class="fas fa-arrow-right"></i></a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE HERO
+═══════════════════════════════════════════ -->
+<section class="page-hero page-hero-img" style="background-image:url('MEDIA/work pics/128510.jpg')">
+  <div class="container"><div class="ph-content">
+    <span class="s-tag"><i class="fas fa-circle-dot"></i> Our Portfolio</span>
+    <h1>Work Gallery</h1>
+    <p>Real installations. Real results. A showcase of our work across Ghana.</p>
+    <nav class="breadcrumb"><a href="index.html">Home</a><i class="fas fa-chevron-right"></i><span>Gallery</span></nav>
+  </div></div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     PHOTO GALLERY
+═══════════════════════════════════════════ -->
+<section class="section section-darker">
+  <div class="container">
+
+    <div class="s-head center reveal">
+      <span class="s-tag"><i class="fas fa-circle-dot"></i> Installations &amp; Training</span>
+      <h2 class="s-title">Photo <span>Gallery</span></h2>
+      <p class="s-sub">Browse our work — from CCTV installs and electric fencing to hands-on training sessions and company events.</p>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="gallery-tabs reveal">
+      <button class="gtab active" data-filter="all">All Photos</button>
+      <button class="gtab" data-filter="cctv">CCTV</button>
+      <button class="gtab" data-filter="fence">Fencing</button>
+      <button class="gtab" data-filter="training">Training</button>
+      <button class="gtab" data-filter="events">Events</button>
+    </div>
+
+    <!-- Photo grid -->
+    <div class="gallery-grid">
+
+      <!-- CCTV — items 1–6 -->
+      <div class="gallery-item reveal d1" data-gcat="cctv">
+        <img src="MEDIA/work pics/128416.jpg" alt="CCTV installation" loading="lazy"/>
+        <div class="gallery-overlay"><i class="fas fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal d2" data-gcat="cctv">
+        <img src="MEDIA/work pics/128417.jpg" alt="CCTV installation" loading="lazy"/>
+        <div class="gallery-overlay"><i class="fas fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal d3" data-gcat="cctv">
+        <img src="MEDIA/work pics/128418.jpg" alt="CCTV installation" loading="lazy"/>
+        <div class="gallery-overlay"><i class="fas fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal d4" data-gcat="cctv">
+        <img src="MEDIA/work pics/128420.jpg" alt="CCTV installation" loading="lazy"/>
+        <div class="gallery-overlay"><i class="fas fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal d5" data-gcat="cctv">
+        <img src="MEDIA/work pics/128421.jpg" alt="CCTV installation" loading="lazy"/>
+        <div class="gallery-overlay"><i class="fas fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal d6" data-gcat="cctv">
+        <img src="MEDIA/work pics/128422.jpg" alt="CCTV installation" loading="lazy"/>
+        <div class="gallery-overlay"><i class="fas fa-magnifying-glass-plus"></i></div>
+      </div>
+
+      <!-- Fencing — items 7–10 -->
+      <div class="gallery-item reveal d1" data-gcat="fence">
+        <img src="MEDIA/work pics/128423.jpg" alt="Electric fencing installation" loading="lazy"/>
+        <div class="gallery-overlay"><i class="fas fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal d2" data-gcat="fence">
+        <img src="MEDIA/work pics/128425.jpg" alt="Electric fencing installation" loading="lazy"/>
+        <div class="gallery-overlay"><i class="fas fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal d3" data-gcat="fence">
+        <img src="MEDIA/work pics/128463.jpg" alt="Electric fencing installation" loading="lazy"/>
+        <div class="gallery-overlay"><i class="fas fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal d4" data-gcat="fence">
+        <img src="MEDIA/work pics/128465.jpg" alt="Electric fencing installation" loading="lazy"/>
+        <div class="gallery-overlay"><i class="fas fa-magnifying-glass-plus"></i></div>
+      </div>
+
+      <!-- Training — items 11–14 -->
+      <div class="gallery-item reveal d1" data-gcat="training">
+        <img src="MEDIA/work pics/128498.jpg" alt="BESITS training session" loading="lazy"/>
+        <div class="gallery-overlay"><i class="fas fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal d2" data-gcat="training">
+        <img src="MEDIA/work pics/128506.jpg" alt="BESITS training session" loading="lazy"/>
+        <div class="gallery-overlay"><i class="fas fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal d3" data-gcat="training">
+        <img src="MEDIA/work pics/128510.jpg" alt="BESITS training session" loading="lazy"/>
+        <div class="gallery-overlay"><i class="fas fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal d4" data-gcat="training">
+        <img src="MEDIA/work pics/128516.jpg" alt="BESITS training session" loading="lazy"/>
+        <div class="gallery-overlay"><i class="fas fa-magnifying-glass-plus"></i></div>
+      </div>
+
+      <!-- Events — items 15–20 -->
+      <div class="gallery-item reveal d1" data-gcat="events">
+        <img src="MEDIA/work pics/128517.jpg" alt="BESITS company event" loading="lazy"/>
+        <div class="gallery-overlay"><i class="fas fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal d2" data-gcat="events">
+        <img src="MEDIA/work pics/128518.jpg" alt="BESITS company event" loading="lazy"/>
+        <div class="gallery-overlay"><i class="fas fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal d3" data-gcat="events">
+        <img src="MEDIA/work pics/128519.jpg" alt="BESITS company event" loading="lazy"/>
+        <div class="gallery-overlay"><i class="fas fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal d4" data-gcat="events">
+        <img src="MEDIA/work pics/128530.jpg" alt="BESITS company event" loading="lazy"/>
+        <div class="gallery-overlay"><i class="fas fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal d5" data-gcat="events">
+        <img src="MEDIA/work pics/IMG_20260327_193521_329.jpg" alt="BESITS company event" loading="lazy"/>
+        <div class="gallery-overlay"><i class="fas fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal d6" data-gcat="events">
+        <img src="MEDIA/work pics/IMG_20260327_193549_846.jpg" alt="BESITS company event" loading="lazy"/>
+        <div class="gallery-overlay"><i class="fas fa-magnifying-glass-plus"></i></div>
+      </div>
+
+    </div><!-- /.gallery-grid -->
+
+    <!-- Quick stats strip -->
+    <div class="gallery-stat-row reveal" style="margin-top:56px;">
+      <div class="gallery-stat">
+        <span class="stat-num">500+</span>
+        <span class="stat-label">Installations Completed</span>
+      </div>
+      <div class="gallery-stat">
+        <span class="stat-num">8+</span>
+        <span class="stat-label">Years of Experience</span>
+      </div>
+      <div class="gallery-stat">
+        <span class="stat-num">300+</span>
+        <span class="stat-label">Happy Clients</span>
+      </div>
+      <div class="gallery-stat">
+        <span class="stat-num">10+</span>
+        <span class="stat-label">Service Categories</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     VIDEO GALLERY
+═══════════════════════════════════════════ -->
+<section class="section section-dark">
+  <div class="container">
+
+    <div class="s-head center reveal">
+      <span class="s-tag"><i class="fas fa-circle-dot"></i> Watch Our Work</span>
+      <h2 class="s-title">Video <span>Gallery</span></h2>
+      <p class="s-sub">See our team in action — hover to preview, click to watch in full.</p>
+    </div>
+
+    <div class="video-grid">
+
+      <div class="vid-card reveal d1">
+        <video class="vid-thumb" src="MEDIA/New folder/20250322_113120.mp4" muted loop playsinline preload="none" poster=""></video>
+        <div class="vid-play-btn"><i class="fas fa-play"></i></div>
+      </div>
+
+      <div class="vid-card reveal d2">
+        <video class="vid-thumb" src="MEDIA/New folder/20250322_144815.mp4" muted loop playsinline preload="none" poster=""></video>
+        <div class="vid-play-btn"><i class="fas fa-play"></i></div>
+      </div>
+
+      <div class="vid-card reveal d3">
+        <video class="vid-thumb" src="MEDIA/New folder/20250328_101322.mp4" muted loop playsinline preload="none" poster=""></video>
+        <div class="vid-play-btn"><i class="fas fa-play"></i></div>
+      </div>
+
+      <div class="vid-card reveal d4">
+        <video class="vid-thumb" src="MEDIA/New folder/20250405_112413.mp4" muted loop playsinline preload="none" poster=""></video>
+        <div class="vid-play-btn"><i class="fas fa-play"></i></div>
+      </div>
+
+      <div class="vid-card reveal d5">
+        <video class="vid-thumb" src="MEDIA/New folder/20250405_112436.mp4" muted loop playsinline preload="none" poster=""></video>
+        <div class="vid-play-btn"><i class="fas fa-play"></i></div>
+      </div>
+
+      <div class="vid-card reveal d6">
+        <video class="vid-thumb" src="MEDIA/New folder/video_2026-03-27_20-03-50.mp4" muted loop playsinline preload="none" poster=""></video>
+        <div class="vid-play-btn"><i class="fas fa-play"></i></div>
+      </div>
+
+      <div class="vid-card reveal d1">
+        <video class="vid-thumb" src="MEDIA/New folder/video_2026-03-27_20-05-58.mp4" muted loop playsinline preload="none" poster=""></video>
+        <div class="vid-play-btn"><i class="fas fa-play"></i></div>
+      </div>
+
+      <div class="vid-card reveal d2">
+        <video class="vid-thumb" src="MEDIA/New folder/video_2026-03-27_20-06-19.mp4" muted loop playsinline preload="none" poster=""></video>
+        <div class="vid-play-btn"><i class="fas fa-play"></i></div>
+      </div>
+
+      <div class="vid-card reveal d3">
+        <video class="vid-thumb" src="MEDIA/New folder/video_2026-03-27_20-06-30.mp4" muted loop playsinline preload="none" poster=""></video>
+        <div class="vid-play-btn"><i class="fas fa-play"></i></div>
+      </div>
+
+    </div><!-- /.video-grid -->
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CTA — BOOK A SITE VISIT
+═══════════════════════════════════════════ -->
+<section class="section section-img-bg" style="background-image:url('MEDIA/work pics/128516.jpg')">
+  <div class="container">
+    <div class="cta-block reveal" style="text-align:center; max-width:720px; margin:0 auto;">
+      <span class="section-tag"><i class="fas fa-circle-dot"></i> Ready to Secure Your Property?</span>
+      <h2 class="section-title" style="margin-bottom:16px; font-size:clamp(26px,4vw,44px);">Let's Protect What Matters</h2>
+      <p style="color:rgba(255,255,255,0.55); font-size:16px; line-height:1.8; margin-bottom:40px; max-width:540px; margin-left:auto; margin-right:auto;">
+        Our engineers will visit your site, assess your security needs, and provide a free, no-obligation quote — anywhere in Ghana.
+      </p>
+      <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+        <a href="contact.html" class="btn btn-primary" style="padding:16px 36px; font-size:15px;">
+          <i class="fas fa-calendar-check"></i> Book a Free Site Visit
+        </a>
+        <a href="https://wa.me/233243543893" class="btn btn-glass" target="_blank" style="padding:16px 36px; font-size:15px;">
+          <i class="fab fa-whatsapp" style="color:#25D366;"></i> WhatsApp Us
+        </a>
+      </div>
+      <p style="margin-top:28px; font-size:13px; color:rgba(255,255,255,0.25);">
+        <i class="fas fa-shield-halved" style="color:var(--orange); margin-right:6px;"></i>
+        Trusted by 500+ homes &amp; businesses across Ghana since 2017
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <img src="MEDIA/FULL LOGO.png" alt="BESITS" class="footer-logo" />
+        <p class="footer-desc">Berntecho Electronic Security &amp; IT Solutions — Ghana's trusted partner since 2017.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Quick Links</h5>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="services.html">Services</a>
+          <a href="training.html">Training</a>
+          <a href="shop.html">Shop</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="blog.html">Blog</a>
+          <a href="faq.html">FAQ</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <div class="footer-ci"><i class="fas fa-phone"></i><a href="tel:+233243543893">+233 243 543 893</a></div>
+        <div class="footer-ci"><i class="fas fa-envelope"></i><a href="mailto:support@berntecho.com">support@berntecho.com</a></div>
+        <div class="footer-ci"><i class="fas fa-location-dot"></i><span>Afienya, Greater Accra, Ghana</span></div>
+        <div class="footer-ci"><i class="fas fa-clock"></i><span>Mon–Fri 8AM–6PM · Sat 9AM–3PM</span></div>
+      </div>
+      <div class="footer-col">
+        <h5>Stay Connected</h5>
+        <div class="socials">
+          <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social"><i class="fab fa-instagram"></i></a>
+          <a href="https://wa.me/233243543893" class="social"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <p class="nl-label">Get updates:</p>
+        <form class="nl-form" onsubmit="return false;">
+          <input type="email" placeholder="Your email" />
+          <button><i class="fas fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      &copy; 2024 BESITS — All rights reserved. &nbsp;·&nbsp;
+      <a href="admin.html" style="color:var(--text-4);font-size:11px;">Admin</a>
+    </div>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lb-close"><i class="fas fa-xmark"></i></button>
+  <button class="lb-prev"  id="lb-prev"><i class="fas fa-chevron-left"></i></button>
+  <button class="lb-next"  id="lb-next"><i class="fas fa-chevron-right"></i></button>
+  <div class="lb-media" id="lb-media"></div>
+</div>
+
+<!-- FLOAT ELEMENTS -->
+<a href="https://wa.me/233243543893" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<div class="float-btns">
+  <button id="btn-bottom" class="float-btn"><i class="fas fa-chevron-down"></i></button>
+  <button id="btn-top"    class="float-btn"><i class="fas fa-chevron-up"></i></button>
+</div>
+
+<script src="js/gallery.js" defer></script>
+<script src="js/supabase.min.js" defer></script>
+<script src="js/db.js" defer></script>
+<script src="js/main.js" defer></script>
+
+</body>
+</html>

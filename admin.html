@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BESITS Admin Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+<!-- ══ LOGIN SCREEN ══════════════════════════════════════════════ -->
+<div class="login-screen" id="login-screen">
+  <div class="login-glow"></div>
+  <div class="login-card">
+    <img src="MEDIA/BESITS LOGO.png" alt="BESITS" class="login-logo" />
+    <h1 class="login-title">Admin Dashboard</h1>
+    <p class="login-sub">Enter your password to access the site editor.</p>
+    <label class="login-label" for="login-pass">Password</label>
+    <input class="login-input" type="password" id="login-pass" placeholder="Enter password…" />
+    <button class="login-btn" id="login-btn"><i class="fas fa-lock"></i> Sign In</button>
+    <p class="login-error" id="login-error"><i class="fas fa-circle-xmark"></i> Incorrect password. Try again.</p>
+  </div>
+</div>
+
+<!-- ══ APP ════════════════════════════════════════════════════════ -->
+<div class="app" id="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="MEDIA/BESITS LOGO.png" alt="BESITS" />
+      <div class="admin-badge">Admin Panel</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="snav-item active" data-panel="dashboard">
+        <i class="fas fa-gauge-high"></i> Dashboard
+      </div>
+      <div class="snav-item" data-panel="hero">
+        <i class="fas fa-house"></i> Hero Section
+      </div>
+      <div class="snav-item" data-panel="about">
+        <i class="fas fa-circle-info"></i> About
+      </div>
+      <div class="snav-item" data-panel="services">
+        <i class="fas fa-screwdriver-wrench"></i> Services
+      </div>
+      <div class="snav-item" data-panel="products">
+        <i class="fas fa-box"></i> Products / Shop
+      </div>
+      <div class="snav-item" data-panel="training">
+        <i class="fas fa-graduation-cap"></i> Training
+      </div>
+      <div class="snav-item" data-panel="faq">
+        <i class="fas fa-circle-question"></i> FAQ
+      </div>
+      <div class="snav-item" data-panel="contact">
+        <i class="fas fa-phone"></i> Contact Info
+      </div>
+      <div class="snav-item" data-panel="submissions">
+        <i class="fas fa-inbox"></i> Submissions
+      </div>
+      <div class="snav-divider"></div>
+      <div class="snav-item" data-panel="settings">
+        <i class="fas fa-gear"></i> Settings
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="index.html" target="_blank" class="view-site">
+        <i class="fas fa-arrow-up-right-from-square"></i> View Live Site
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <!-- Top bar -->
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">Dashboard</div>
+      <div class="topbar-actions">
+        <button class="btn-publish" id="btn-publish">
+          <i class="fas fa-upload"></i> Save &amp; Publish
+        </button>
+        <button class="btn-logout" id="btn-logout"><i class="fas fa-right-from-bracket"></i> Logout</button>
+      </div>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content-area">
+
+      <!-- ── DASHBOARD ── -->
+      <div class="panel active" id="panel-dashboard">
+        <h2 class="panel-title">Welcome Back</h2>
+        <p class="panel-desc">BESITS site overview. Use the sidebar to edit any section and publish your changes.</p>
+        <div id="db-setup-banner" style="display:none;background:rgba(232,89,26,0.12);border:1px solid rgba(232,89,26,0.35);border-radius:12px;padding:16px 20px;margin-bottom:24px;font-size:13.5px;line-height:1.6;">
+          <strong style="color:#e8591a"><i class="fas fa-triangle-exclamation"></i> Database not set up yet.</strong><br/>
+          Open <strong>Supabase → SQL Editor</strong>, paste the contents of <code style="background:rgba(255,255,255,0.08);padding:2px 7px;border-radius:4px">supabase_setup.sql</code> from your project folder, and click <strong>Run</strong>. Then refresh this page.
+        </div>
+        <div class="dash-stats">
+          <div class="dash-stat">
+            <div class="dash-stat-icon"><i class="fas fa-file-lines"></i></div>
+            <div class="dash-stat-num">7</div>
+            <div class="dash-stat-lbl">Pages</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-icon"><i class="fas fa-box"></i></div>
+            <div class="dash-stat-num" id="stat-products">9</div>
+            <div class="dash-stat-lbl">Products</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-icon"><i class="fas fa-inbox"></i></div>
+            <div class="dash-stat-num" id="stat-submissions">—</div>
+            <div class="dash-stat-lbl">Submissions</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-icon" style="color:#e8591a"><i class="fas fa-envelope"></i></div>
+            <div class="dash-stat-num" id="stat-new-msgs" style="color:#e8591a">—</div>
+            <div class="dash-stat-lbl">New Messages</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-icon"><i class="fas fa-paper-plane"></i></div>
+            <div class="dash-stat-num" id="stat-newsletter">—</div>
+            <div class="dash-stat-lbl">Subscribers</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-icon"><i class="fas fa-circle-question"></i></div>
+            <div class="dash-stat-num" id="stat-faq">11</div>
+            <div class="dash-stat-lbl">FAQ Items</div>
+          </div>
+        </div>
+        <p style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:18px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase">Quick Edit</p>
+        <div class="dash-quick">
+          <div class="dash-quick-item" data-panel="hero"><i class="fas fa-house"></i><span>Edit Hero Text</span></div>
+          <div class="dash-quick-item" data-panel="contact"><i class="fas fa-phone"></i><span>Update Contact Info</span></div>
+          <div class="dash-quick-item" data-panel="products"><i class="fas fa-box"></i><span>Manage Products</span></div>
+          <div class="dash-quick-item" data-panel="training"><i class="fas fa-graduation-cap"></i><span>Training Prices &amp; Dates</span></div>
+          <div class="dash-quick-item" data-panel="faq"><i class="fas fa-circle-question"></i><span>Edit FAQ</span></div>
+          <div class="dash-quick-item" data-panel="settings"><i class="fas fa-gear"></i><span>Site Settings</span></div>
+        </div>
+      </div>
+
+      <!-- ── HERO ── -->
+      <div class="panel" id="panel-hero">
+        <h2 class="panel-title">Hero Section</h2>
+        <p class="panel-desc">Edit the homepage hero text, animated words, and call-to-action buttons.</p>
+        <div class="edit-card">
+          <div class="edit-card-title"><i class="fas fa-tag"></i> Badge &amp; Headline</div>
+          <div class="field-group"><label>Badge Text</label><input class="field-input" id="hero-badge" placeholder="Ghana's #1 Security Company" /></div>
+          <div class="field-group"><label>Headline Line 1</label><input class="field-input" id="hero-h1" placeholder="We Secure &amp; Power" /></div>
+          <div class="field-group"><label>Headline Line 3 (after animated word)</label><input class="field-input" id="hero-h3" placeholder="Across Ghana." /></div>
+          <div class="field-group"><label>Subtext</label><textarea class="field-textarea" id="hero-sub"></textarea></div>
+        </div>
+        <div class="edit-card">
+          <div class="edit-card-title"><i class="fas fa-rotate"></i> Cycling Words (animated)</div>
+          <p style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:14px">One word per line. These cycle in the italic orange text.</p>
+          <div class="field-group"><textarea class="field-textarea" id="hero-words" style="min-height:130px"></textarea></div>
+        </div>
+        <div class="edit-card">
+          <div class="edit-card-title"><i class="fas fa-arrow-pointer"></i> CTA Buttons</div>
+          <div class="field-row">
+            <div class="field-group"><label>Button 1 Text</label><input class="field-input" id="hero-cta1-text" /></div>
+            <div class="field-group"><label>Button 1 Link</label><input class="field-input" id="hero-cta1-href" placeholder="services.html" /></div>
+          </div>
+          <div class="field-row">
+            <div class="field-group"><label>Button 2 Text</label><input class="field-input" id="hero-cta2-text" /></div>
+            <div class="field-group"><label>Button 2 Link</label><input class="field-input" id="hero-cta2-href" placeholder="contact.html" /></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ABOUT ── -->
+      <div class="panel" id="panel-about">
+        <h2 class="panel-title">About Section</h2>
+        <p class="panel-desc">Edit the About preview and About page content.</p>
+        <div class="edit-card">
+          <div class="edit-card-title"><i class="fas fa-circle-info"></i> About Content</div>
+          <div class="field-group"><label>Section Tag</label><input class="field-input" id="about-tag" placeholder="About BESITS" /></div>
+          <div class="field-group"><label>Headline</label><input class="field-input" id="about-headline" /></div>
+          <div class="field-group"><label>Description</label><textarea class="field-textarea" id="about-desc" style="min-height:100px"></textarea></div>
+          <div class="field-row">
+            <div class="field-group"><label>Founded Year</label><input class="field-input" id="about-year" placeholder="2017" /></div>
+            <div class="field-group"><label>Badge Label</label><input class="field-input" id="about-badge-label" placeholder="Founded in Ghana" /></div>
+          </div>
+        </div>
+        <div class="edit-card">
+          <div class="edit-card-title"><i class="fas fa-bullseye"></i> Mission &amp; Vision</div>
+          <div class="field-group"><label>Mission Statement</label><textarea class="field-textarea" id="about-mission"></textarea></div>
+          <div class="field-group"><label>Vision Statement</label><textarea class="field-textarea" id="about-vision"></textarea></div>
+        </div>
+      </div>
+
+      <!-- ── SERVICES ── -->
+      <div class="panel" id="panel-services">
+        <h2 class="panel-title">Services</h2>
+        <p class="panel-desc">Edit service names and descriptions shown on the Services page.</p>
+        <div class="edit-card">
+          <div class="edit-card-title"><i class="fas fa-list"></i> Service Cards</div>
+          <div class="list-editor" id="services-list"></div>
+          <button class="btn-add-item" id="add-service"><i class="fas fa-plus"></i> Add Service</button>
+        </div>
+      </div>
+
+      <!-- ── PRODUCTS ── -->
+      <div class="panel" id="panel-products">
+        <h2 class="panel-title">Products / Shop</h2>
+        <p class="panel-desc">Manage products shown in the shop. Add prices, descriptions, and categories.</p>
+        <div class="edit-card">
+          <div class="edit-card-title"><i class="fas fa-box"></i> Product Listings</div>
+          <div class="list-editor" id="products-list"></div>
+          <button class="btn-add-item" id="add-product"><i class="fas fa-plus"></i> Add Product</button>
+        </div>
+      </div>
+
+      <!-- ── TRAINING ── -->
+      <div class="panel" id="panel-training">
+        <h2 class="panel-title">Training Programs</h2>
+        <p class="panel-desc">Update training dates, fees, and program descriptions.</p>
+        <div class="edit-card">
+          <div class="edit-card-title"><i class="fas fa-location-dot"></i> GPS Tracking Training</div>
+          <div class="field-row">
+            <div class="field-group"><label>Duration</label><input class="field-input" id="t1-duration" placeholder="e.g. 3 Days" /></div>
+            <div class="field-group"><label>Fee</label><input class="field-input" id="t1-fee" placeholder="e.g. GHS 500" /></div>
+          </div>
+          <div class="field-group"><label>Description</label><textarea class="field-textarea" id="t1-desc"></textarea></div>
+        </div>
+        <div class="edit-card">
+          <div class="edit-card-title"><i class="fas fa-bolt"></i> Electric Fencing Training</div>
+          <div class="field-row">
+            <div class="field-group"><label>Duration</label><input class="field-input" id="t2-duration" placeholder="e.g. 5 Days" /></div>
+            <div class="field-group"><label>Fee</label><input class="field-input" id="t2-fee" placeholder="e.g. GHS 600" /></div>
+          </div>
+          <div class="field-group"><label>Description</label><textarea class="field-textarea" id="t2-desc"></textarea></div>
+        </div>
+      </div>
+
+      <!-- ── FAQ ── -->
+      <div class="panel" id="panel-faq">
+        <h2 class="panel-title">FAQ</h2>
+        <p class="panel-desc">Add, edit, or remove FAQ questions and answers.</p>
+        <div class="edit-card">
+          <div class="edit-card-title"><i class="fas fa-circle-question"></i> FAQ Items</div>
+          <div class="list-editor" id="faq-list"></div>
+          <button class="btn-add-item" id="add-faq"><i class="fas fa-plus"></i> Add Question</button>
+        </div>
+      </div>
+
+      <!-- ── CONTACT ── -->
+      <div class="panel" id="panel-contact">
+        <h2 class="panel-title">Contact Info</h2>
+        <p class="panel-desc">Update your phone, email, address, and social media links.</p>
+        <div class="edit-card">
+          <div class="edit-card-title"><i class="fas fa-address-card"></i> Business Details</div>
+          <div class="field-row">
+            <div class="field-group"><label>Phone Number</label><input class="field-input" id="contact-phone" placeholder="+233 243 543 893" /></div>
+            <div class="field-group"><label>Email Address</label><input class="field-input" id="contact-email" placeholder="support@berntecho.com" /></div>
+          </div>
+          <div class="field-group"><label>Address</label><input class="field-input" id="contact-address" placeholder="Afienya, Greater Accra, Ghana" /></div>
+          <div class="field-row">
+            <div class="field-group"><label>Mon–Fri Hours</label><input class="field-input" id="contact-hours-wk" placeholder="8:00 AM – 6:00 PM" /></div>
+            <div class="field-group"><label>Saturday Hours</label><input class="field-input" id="contact-hours-sat" placeholder="9:00 AM – 3:00 PM" /></div>
+          </div>
+        </div>
+        <div class="edit-card">
+          <div class="edit-card-title"><i class="fas fa-share-nodes"></i> Social Media Links</div>
+          <div class="field-row">
+            <div class="field-group"><label><i class="fab fa-facebook" style="color:#1877f2;margin-right:6px"></i>Facebook URL</label><input class="field-input" id="social-fb" placeholder="https://facebook.com/besits" /></div>
+            <div class="field-group"><label><i class="fab fa-instagram" style="color:#e1306c;margin-right:6px"></i>Instagram URL</label><input class="field-input" id="social-ig" placeholder="https://instagram.com/besits" /></div>
+          </div>
+          <div class="field-row">
+            <div class="field-group"><label><i class="fab fa-whatsapp" style="color:#25d366;margin-right:6px"></i>WhatsApp Number</label><input class="field-input" id="social-wa" placeholder="+233243543893" /></div>
+            <div class="field-group"><label><i class="fab fa-linkedin" style="color:#0a66c2;margin-right:6px"></i>LinkedIn URL</label><input class="field-input" id="social-li" placeholder="https://linkedin.com/company/besits" /></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SUBMISSIONS ── -->
+      <div class="panel" id="panel-submissions">
+        <h2 class="panel-title">Submissions</h2>
+        <p class="panel-desc">View contact messages, training registrations, and newsletter subscribers from your Supabase database.</p>
+        <div class="subs-tabs">
+          <button class="subs-tab-btn active" data-subs-tab="contact"><i class="fas fa-envelope"></i> Contact Messages</button>
+          <button class="subs-tab-btn" data-subs-tab="training"><i class="fas fa-graduation-cap"></i> Training Registrations</button>
+          <button class="subs-tab-btn" data-subs-tab="newsletter"><i class="fas fa-paper-plane"></i> Newsletter</button>
+        </div>
+        <div class="subs-table-wrap" id="subs-content">
+          <p style="color:rgba(255,255,255,0.4);padding:24px">Click a tab to load submissions.</p>
+        </div>
+      </div>
+
+      <!-- ── SETTINGS ── -->
+      <div class="panel" id="panel-settings">
+        <h2 class="panel-title">Settings</h2>
+        <p class="panel-desc">Site-wide settings and admin password management.</p>
+        <div class="edit-card">
+          <div class="edit-card-title"><i class="fas fa-lock"></i> Change Admin Password</div>
+          <div class="field-group"><label>Current Password</label><input class="field-input" type="password" id="pwd-current" /></div>
+          <div class="field-row">
+            <div class="field-group"><label>New Password</label><input class="field-input" type="password" id="pwd-new" /></div>
+            <div class="field-group"><label>Confirm New Password</label><input class="field-input" type="password" id="pwd-confirm" /></div>
+          </div>
+          <button class="btn-add-item" id="btn-change-pwd" style="margin-top:4px"><i class="fas fa-key"></i> Update Password</button>
+          <p class="field-hint" id="pwd-msg" style="margin-top:10px"></p>
+        </div>
+        <div class="edit-card">
+          <div class="edit-card-title"><i class="fas fa-rotate-left"></i> Reset Content</div>
+          <p style="font-size:13.5px;color:rgba(255,255,255,0.4);margin-bottom:16px">Reset all site content back to the original defaults. This cannot be undone.</p>
+          <button class="btn-add-item" id="btn-reset" style="color:#ef4444;border-color:rgba(239,68,68,0.3)"><i class="fas fa-trash-can"></i> Reset to Defaults</button>
+        </div>
+      </div>
+
+    </div><!-- /content-area -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- Toast -->
+<div class="toast" id="toast"><i class="fas fa-circle-check"></i> <span id="toast-msg">Changes published!</span></div>
+
+<script src="js/supabase.min.js" defer></script>
+<script src="js/db.js" defer></script>
+<script src="js/admin.js" defer></script>
+</body>
+</html>

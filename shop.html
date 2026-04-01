@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop — BESITS | Security &amp; IT Equipment Ghana</title>
+  <meta name="description" content="Buy quality CCTV kits, GPS trackers, electric fence kits, access control, solar and IT accessories directly from BESITS Ghana." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* Shop-specific extras */
+    .shop-search {
+      display: flex; align-items:center; gap:12px; margin-bottom:28px;
+    }
+    .shop-search input {
+      flex:1; background:var(--glass-2); border:1px solid var(--border);
+      border-radius:var(--r-full); padding:12px 20px; font-size:14px;
+      color:var(--text); font-family:var(--font-body); outline:none;
+      transition:border-color var(--t);
+    }
+    .shop-search input::placeholder { color:var(--text-4); }
+    .shop-search input:focus { border-color:var(--border-orange); }
+    .shop-search i { color:var(--text-3); font-size:16px; margin-left:-44px; pointer-events:none; }
+
+    .badge-new { background:var(--orange); color:#fff; font-size:10px; font-weight:700; padding:3px 8px; border-radius:var(--r-full); margin-left:8px; letter-spacing:0.08em; }
+    .badge-hot { background:#ef4444; color:#fff; font-size:10px; font-weight:700; padding:3px 8px; border-radius:var(--r-full); margin-left:8px; }
+
+    /* Empty state */
+    .no-products { text-align:center; padding:80px 0; color:var(--text-3); }
+    .no-products i { font-size:48px; margin-bottom:16px; display:block; }
+
+    /* Quick-view overlay button on card image */
+    .shop-card-img { position: relative; }
+    .qv-btn {
+      position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%) translateY(8px);
+      background: rgba(10,10,10,0.85); backdrop-filter: blur(8px);
+      color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 9999px;
+      padding: 8px 20px; font-size: 12.5px; font-weight: 600; letter-spacing: 0.03em;
+      cursor: pointer; opacity: 0; transition: all 0.25s; white-space: nowrap;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .shop-card:hover .qv-btn { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* Product modal */
+    .pv-overlay {
+      position: fixed; inset: 0; z-index: 9000;
+      background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    }
+    .pv-overlay.open { opacity: 1; pointer-events: all; }
+    .pv-modal {
+      background: #111; border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px; overflow: hidden; max-width: 860px; width: 100%;
+      display: grid; grid-template-columns: 1fr 1fr;
+      max-height: 90vh; transform: scale(0.94); transition: transform 0.3s;
+    }
+    .pv-overlay.open .pv-modal { transform: scale(1); }
+    @media (max-width: 640px) { .pv-modal { grid-template-columns: 1fr; } }
+    .pv-img-side {
+      background: #0a0a0a; display: flex; align-items: center; justify-content: center;
+      min-height: 320px; overflow: hidden;
+    }
+    .pv-img-side img { width: 100%; height: 100%; object-fit: cover; }
+    .pv-body { padding: 40px 36px; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; }
+    @media (max-width: 640px) { .pv-body { padding: 28px 24px; } }
+    .pv-cat { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 10px; }
+    .pv-title { font-family: var(--font-head); font-size: clamp(18px,2.5vw,26px); font-weight: 800; color: rgba(255,255,255,0.95); line-height: 1.25; margin-bottom: 12px; }
+    .pv-price { font-size: 28px; font-weight: 800; color: var(--orange); margin-bottom: 16px; }
+    .pv-desc { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.75; margin-bottom: 28px; }
+    .pv-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .pv-close {
+      position: absolute; top: 16px; right: 16px;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.6); border-radius: 50%; width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.2s; font-size: 16px;
+    }
+    .pv-close:hover { background: rgba(232,89,26,0.2); border-color: var(--orange); color: #fff; }
+
+    /* Quote CTA card */
+    .quote-cta-card {
+      background:var(--glass-1); border:1px solid var(--border);
+      border-radius:var(--r-md); padding:28px 32px; margin-top:52px;
+      display:flex; align-items:center; gap:24px; flex-wrap:wrap;
+      transition:border-color var(--t);
+    }
+    .quote-cta-card:hover { border-color:var(--border-orange); }
+    .quote-cta-card i { font-size:40px; color:var(--orange); flex-shrink:0; }
+    .quote-cta-card h3 { font-size:17px; font-weight:700; color:var(--text); margin-bottom:5px; font-family:var(--font-head); }
+    .quote-cta-card p { font-size:14px; color:var(--text-2); }
+  </style>
+</head>
+<body>
+<!-- Product Quick-View Modal -->
+<div class="pv-overlay" id="pv-overlay" role="dialog" aria-modal="true" aria-label="Product Preview">
+  <div class="pv-modal" id="pv-modal" style="position:relative;">
+    <button class="pv-close" id="pv-close" aria-label="Close"><i class="fas fa-xmark"></i></button>
+    <div class="pv-img-side"><img id="pv-img" src="" alt="" /></div>
+    <div class="pv-body">
+      <div class="pv-cat" id="pv-cat"></div>
+      <h2 class="pv-title" id="pv-title"></h2>
+      <div class="pv-price" id="pv-price"></div>
+      <p class="pv-desc" id="pv-desc"></p>
+      <div class="pv-actions">
+        <a href="contact.html" class="btn btn-primary">Request Quote <i class="fas fa-arrow-right"></i></a>
+        <a href="https://wa.me/233243543893" class="btn btn-glass" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="scroll-progress"></div>
+<div class="top-bar"><div class="container"><div class="top-bar-left"><div class="top-bar-item"><i class="fas fa-phone"></i><a href="tel:+233243543893">+233 243 543 893</a></div><div class="top-bar-item"><i class="fas fa-envelope"></i><a href="mailto:support@berntecho.com">support@berntecho.com</a></div><div class="top-bar-item"><i class="fas fa-location-dot"></i><span>Afienya, Ghana</span></div></div><div class="top-bar-right"><span>Anything IT, We fix it.</span></div></div></div>
+<nav class="navbar"><div class="container"><a href="index.html" class="navbar-brand"><img src="MEDIA/BESITS LOGO.png" alt="BESITS" /></a><ul class="navbar-nav"><li><a href="index.html" class="nav-link">Home</a></li><li><a href="about.html" class="nav-link">About</a></li><li><a href="services.html" class="nav-link">Services</a></li><li><a href="shop.html" class="nav-link active">Shop</a></li><li><a href="training.html" class="nav-link">Training</a></li><li><a href="gallery.html" class="nav-link">Gallery</a></li><li><a href="blog.html" class="nav-link">Blog</a></li><li><a href="faq.html" class="nav-link">FAQ</a></li><li><a href="contact.html" class="nav-link">Contact</a></li></ul><a href="contact.html" class="btn-nav navbar-cta">Get a Quote <i class="fas fa-arrow-right"></i></a><button class="hamburger"><span></span><span></span><span></span></button></div></nav>
+<div class="mobile-nav"><button class="mnav-close"><i class="fas fa-xmark"></i></button><a href="index.html" class="nav-link">Home</a><a href="about.html" class="nav-link">About</a><a href="services.html" class="nav-link">Services</a><a href="shop.html" class="nav-link active">Shop</a><a href="training.html" class="nav-link">Training</a><a href="gallery.html" class="nav-link">Gallery</a><a href="blog.html" class="nav-link">Blog</a><a href="faq.html" class="nav-link">FAQ</a><a href="contact.html" class="nav-link">Contact</a><div class="navbar-cta"><a href="contact.html" class="btn-nav">Get a Quote <i class="fas fa-arrow-right"></i></a></div></div>
+
+<!-- Shop Hero -->
+<div class="shop-hero">
+  <div class="container"><div class="shop-hero-content">
+    <span class="s-tag"><i class="fas fa-circle-dot"></i> Direct From BESITS</span>
+    <h1>Our Shop</h1>
+    <p>Quality security &amp; IT equipment from certified brands — with expert support included.</p>
+  </div></div>
+</div>
+
+<!-- Shop Content -->
+<section class="section section-darker">
+  <div class="container">
+
+    <!-- Search & Filters -->
+    <div class="reveal">
+      <div class="shop-search">
+        <input type="text" id="shop-search" placeholder="Search products…" />
+        <i class="fas fa-magnifying-glass"></i>
+      </div>
+      <div class="cat-tabs">
+        <button class="cat-tab active" data-filter="all">All Products</button>
+        <button class="cat-tab" data-filter="cctv">CCTV Kits</button>
+        <button class="cat-tab" data-filter="fence">Electric Fence</button>
+        <button class="cat-tab" data-filter="gps">GPS Devices</button>
+        <button class="cat-tab" data-filter="access">Access Control</button>
+        <button class="cat-tab" data-filter="solar">Solar</button>
+        <button class="cat-tab" data-filter="it">IT Accessories</button>
+      </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="shop-grid" id="shop-grid">
+
+      <div class="shop-card reveal d1" data-category="cctv" data-tilt>
+        <div class="shop-card-img"><img src="MEDIA/shop/CCTV CATEGORY/CCTV Starter Kit (4-Camera).jpg" alt="CCTV Starter Kit" loading="lazy" /></div>
+        <div class="shop-card-body">
+          <div class="prod-cat-tag">CCTV Kits</div>
+          <h3>CCTV Starter Kit (4-Camera)<span class="badge-new">NEW</span></h3>
+          <div class="price">GHS 850</div>
+          <p class="desc">4 HD cameras, DVR, 20m cables, power supply. Plug-and-play with mobile app viewing.</p>
+          <div class="shop-card-actions">
+            <a href="contact.html" class="btn btn-primary">Request Quote</a>
+            <a href="contact.html" class="btn btn-glass">Enquire</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card reveal d2" data-category="cctv" data-tilt>
+        <div class="shop-card-img"><img src="MEDIA/shop/CCTV CATEGORY/CCTV Pro Kit (8-Camera).png" alt="CCTV Pro Kit" loading="lazy" /></div>
+        <div class="shop-card-body">
+          <div class="prod-cat-tag">CCTV Kits</div>
+          <h3>CCTV Pro Kit (8-Camera)<span class="badge-hot">HOT</span></h3>
+          <div class="price">GHS 1,600</div>
+          <p class="desc">8 IP cameras, NVR, PoE switch, 1TB storage. Night vision and motion detection included.</p>
+          <div class="shop-card-actions">
+            <a href="contact.html" class="btn btn-primary">Request Quote</a>
+            <a href="contact.html" class="btn btn-glass">Enquire</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card reveal d3" data-category="fence" data-tilt>
+        <div class="shop-card-img"><img src="MEDIA/shop/CCTV CATEGORY/Electric Fence Energizer Kit.jpg" alt="Electric Fence Kit" loading="lazy" /></div>
+        <div class="shop-card-body">
+          <div class="prod-cat-tag">Electric Fence</div>
+          <h3>Electric Fence Energizer Kit</h3>
+          <div class="price">GHS 1,200</div>
+          <p class="desc">Complete kit: energizer, fence wire, insulators, warning signs, and alarm module for 100m perimeter.</p>
+          <div class="shop-card-actions">
+            <a href="contact.html" class="btn btn-primary">Request Quote</a>
+            <a href="contact.html" class="btn btn-glass">Enquire</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card reveal d1" data-category="gps" data-tilt>
+        <div class="shop-card-img"><img src="MEDIA/shop/CCTV CATEGORY/GPS Tracking.jpg" alt="GPS Tracker Pro" loading="lazy" /></div>
+        <div class="shop-card-body">
+          <div class="prod-cat-tag">GPS Devices</div>
+          <h3>GPS Tracker Pro (Vehicle)<span class="badge-new">NEW</span></h3>
+          <div class="price">GHS 320</div>
+          <p class="desc">Real-time vehicle tracking, mobile app, geo-fence alerts, speed monitoring, 12-month subscription.</p>
+          <div class="shop-card-actions">
+            <a href="contact.html" class="btn btn-primary">Request Quote</a>
+            <a href="contact.html" class="btn btn-glass">Enquire</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card reveal d2" data-category="gps" data-tilt>
+        <div class="shop-card-img"><img src="MEDIA/shop/gps-asset.jpg" alt="GPS Asset Tracker" loading="lazy" /></div>
+        <div class="shop-card-body">
+          <div class="prod-cat-tag">GPS Devices</div>
+          <h3>GPS Asset Tracker</h3>
+          <div class="price">GHS 220</div>
+          <p class="desc">Compact tracker with long battery. Ideal for equipment, generators, and cargo containers.</p>
+          <div class="shop-card-actions">
+            <a href="contact.html" class="btn btn-primary">Request Quote</a>
+            <a href="contact.html" class="btn btn-glass">Enquire</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card reveal d3" data-category="access" data-tilt>
+        <div class="shop-card-img"><img src="MEDIA/shop/CCTV CATEGORY/Access Control.jpeg" alt="Fingerprint Access Controller" loading="lazy" /></div>
+        <div class="shop-card-body">
+          <div class="prod-cat-tag">Access Control</div>
+          <h3>Fingerprint Access Controller</h3>
+          <div class="price">GHS 480</div>
+          <p class="desc">Biometric + RFID + PIN entry. Holds up to 1,000 users with full access log.</p>
+          <div class="shop-card-actions">
+            <a href="contact.html" class="btn btn-primary">Request Quote</a>
+            <a href="contact.html" class="btn btn-glass">Enquire</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card reveal d1" data-category="solar" data-tilt>
+        <div class="shop-card-img"><img src="MEDIA/shop/CCTV CATEGORY/Solar Installation.jpg" alt="Solar Inverter" loading="lazy" /></div>
+        <div class="shop-card-body">
+          <div class="prod-cat-tag">Solar</div>
+          <h3>1.5KVA Solar Inverter</h3>
+          <div class="price">GHS 950</div>
+          <p class="desc">Hybrid inverter with built-in MPPT charge controller. Supports 24V battery and grid connection.</p>
+          <div class="shop-card-actions">
+            <a href="contact.html" class="btn btn-primary">Request Quote</a>
+            <a href="contact.html" class="btn btn-glass">Enquire</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card reveal d2" data-category="it" data-tilt>
+        <div class="shop-card-img"><img src="MEDIA/shop/CCTV CATEGORY/8-Port PoE Network Switch.jpg" alt="PoE Network Switch" loading="lazy" /></div>
+        <div class="shop-card-body">
+          <div class="prod-cat-tag">IT Accessories</div>
+          <h3>8-Port PoE Network Switch</h3>
+          <div class="price">GHS 380</div>
+          <p class="desc">Gigabit PoE switch for IP cameras, phones, and access points over CAT6 cable.</p>
+          <div class="shop-card-actions">
+            <a href="contact.html" class="btn btn-primary">Request Quote</a>
+            <a href="contact.html" class="btn btn-glass">Enquire</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card reveal d3" data-category="it" data-tilt>
+        <div class="shop-card-img"><img src="MEDIA/shop/router.jpg" alt="WiFi Router" loading="lazy" /></div>
+        <div class="shop-card-body">
+          <div class="prod-cat-tag">IT Accessories</div>
+          <h3>Dual-Band WiFi Router AC1200</h3>
+          <div class="price">GHS 280</div>
+          <p class="desc">Dual-band router with 4 LAN ports and strong signal for homes and small offices.</p>
+          <div class="shop-card-actions">
+            <a href="contact.html" class="btn btn-primary">Request Quote</a>
+            <a href="contact.html" class="btn btn-glass">Enquire</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bulk Quote Card -->
+    <div class="quote-cta-card reveal">
+      <i class="fas fa-circle-info"></i>
+      <div style="flex:1;min-width:200px">
+        <h3>Need bulk pricing or a custom order?</h3>
+        <p>For large orders, commercial projects, or items not listed — get in touch for a tailored quote.</p>
+      </div>
+      <a href="contact.html" class="btn btn-primary">Request a Quote <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+  </div>
+</section>
+
+<section class="cta-band reveal">
+  <div class="container"><h2>Need Help Choosing the Right Equipment?</h2><p>Our team will assess your needs and recommend the best solution at the best price.</p>
+  <div class="btn-group"><a href="contact.html" class="btn" style="background:#fff;color:var(--orange);font-weight:700;">Talk to an Expert <i class="fas fa-arrow-right"></i></a><a href="tel:+233243543893" class="btn" style="background:rgba(0,0,0,0.2);color:#fff;border:1px solid rgba(255,255,255,0.35);"><i class="fas fa-phone"></i> Call Now</a></div></div>
+</section>
+
+<footer class="footer"><div class="container"><div class="footer-grid"><div><img src="MEDIA/FULL LOGO.png" alt="BESITS" class="footer-logo" /><p class="footer-desc">Berntecho Electronic Security &amp; IT Solutions — Ghana's trusted partner since 2017.</p></div><div class="footer-col"><h5>Quick Links</h5><div class="footer-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a><a href="training.html">Training</a><a href="shop.html">Shop</a><a href="gallery.html">Gallery</a><a href="blog.html">Blog</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a></div></div><div class="footer-col"><h5>Contact</h5><div class="footer-ci"><i class="fas fa-phone"></i><a href="tel:+233243543893">+233 243 543 893</a></div><div class="footer-ci"><i class="fas fa-envelope"></i><a href="mailto:support@berntecho.com">support@berntecho.com</a></div><div class="footer-ci"><i class="fas fa-location-dot"></i><span>Afienya, Greater Accra, Ghana</span></div><div class="footer-ci"><i class="fas fa-clock"></i><span>Mon–Fri 8AM–6PM · Sat 9AM–3PM</span></div></div><div class="footer-col"><h5>Stay Connected</h5><div class="socials"><a href="#" class="social"><i class="fab fa-facebook-f"></i></a><a href="#" class="social"><i class="fab fa-instagram"></i></a><a href="https://wa.me/233243543893" class="social"><i class="fab fa-whatsapp"></i></a><a href="#" class="social"><i class="fab fa-linkedin-in"></i></a></div><p class="nl-label">Get updates:</p><form class="nl-form" onsubmit="return false;"><input type="email" placeholder="Your email" /><button><i class="fas fa-paper-plane"></i></button></form></div></div></div><div class="footer-bottom"><div class="container">&copy; 2024 BESITS — All rights reserved.</div></div></footer>
+<a href="https://wa.me/233243543893" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<div class="float-btns"><button id="btn-bottom" class="float-btn"><i class="fas fa-chevron-down"></i></button><button id="btn-top" class="float-btn"><i class="fas fa-chevron-up"></i></button></div>
+
+<script src="js/supabase.min.js" defer></script>
+<script src="js/db.js" defer></script>
+<script src="js/main.js" defer></script>
+<script>
+  // Shop live search
+  const searchInput = document.getElementById('shop-search');
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.toLowerCase();
+      document.querySelectorAll('.shop-card').forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(q) ? '' : 'none';
+      });
+    });
+  }
+
+  // Product Quick-View
+  (function() {
+    const overlay = document.getElementById('pv-overlay');
+    const closeBtn = document.getElementById('pv-close');
+    if (!overlay) return;
+
+    function openModal(card) {
+      const imgEl  = card.querySelector('.shop-card-img img');
+      const cat    = card.querySelector('.prod-cat-tag')?.textContent || '';
+      const title  = card.querySelector('h3')?.childNodes[0]?.textContent.trim() || '';
+      const price  = card.querySelector('.price')?.textContent || '';
+      const desc   = card.querySelector('.desc')?.textContent || '';
+
+      document.getElementById('pv-img').src = imgEl ? imgEl.src : '';
+      document.getElementById('pv-img').alt = imgEl ? imgEl.alt : '';
+      document.getElementById('pv-cat').textContent = cat;
+      document.getElementById('pv-title').textContent = title;
+      document.getElementById('pv-price').textContent = price;
+      document.getElementById('pv-desc').textContent = desc;
+
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // Inject Quick View button into every card image
+    document.querySelectorAll('.shop-card').forEach(card => {
+      const imgWrap = card.querySelector('.shop-card-img');
+      if (!imgWrap) return;
+      const btn = document.createElement('button');
+      btn.className = 'qv-btn';
+      btn.innerHTML = '<i class="fas fa-eye"></i> Quick View';
+      btn.addEventListener('click', e => { e.stopPropagation(); openModal(card); });
+      imgWrap.appendChild(btn);
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  })();
+</script>
+</body></html>
